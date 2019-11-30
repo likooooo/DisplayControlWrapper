@@ -1,0 +1,5 @@
+G:\Code\VSproject\github\DisplayControlWrapper\lib\Release\DisplayControlWrapper.dll
+G:\Code\VSproject\github\DisplayControlWrapper\lib\Release\DisplayControlWrapper.pdb
+G:\Code\VSproject\github\DisplayControlWrapper\obj\Release\DisplayControlWrapper.csproj.CoreCompileInputs.cache
+G:\Code\VSproject\github\DisplayControlWrapper\obj\Release\DisplayControlWrapper.dll
+G:\Code\VSproject\github\DisplayControlWrapper\obj\Release\DisplayControlWrapper.pdb
