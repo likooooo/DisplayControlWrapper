@@ -25,7 +25,6 @@ namespace DisplayControlWrapper
 
         void RestWindowSize();
         void ChangeWindowSize(Rectangle rectangle);
-        
 
         bool EnableZoomImage { get; set; }
         bool EnableMoveImage { get; set; }       
@@ -131,7 +130,7 @@ namespace DisplayControlWrapper
             set
             {
                 if (enableZoomImage == value) return;
-                MouseWheel += (object sender, MouseEventArgs e) => { HMouseWheel(sender, e); };
+                Parent.MouseWheel += (object sender, MouseEventArgs e) => { HMouseWheel(sender, e); };
                 enableZoomImage = value;
             }
         }
@@ -146,9 +145,9 @@ namespace DisplayControlWrapper
             {
                 if (enableMoveImage == value) return;
                 enableMoveImage = value;
-                MouseDown += new MouseEventHandler(HMouseDown);
-                MouseMove += new MouseEventHandler(HMouseMove);
-                MouseUp += new MouseEventHandler(HMouseUp); 
+                Parent.MouseDown += new MouseEventHandler(HMouseDown);
+                Parent.MouseMove += new MouseEventHandler(HMouseMove);
+                Parent.MouseUp += new MouseEventHandler(HMouseUp);
             }
         }
 
@@ -214,7 +213,7 @@ namespace DisplayControlWrapper
         }
         public new  Control Parent
         { get; set; }
-        public void OpenWindow(int top, int left, int width, int height,Control parent, IntPtr parentPtr) 
+        public void OpenWindow(int top, int left, int width, int height,Control parent, IntPtr parentPtr, bool zoomImg = true, bool moveImg = true) 
         {
             originDisplayRectangle = new Rectangle(top, left, width, height);
            // parent.Controls.Add(this);
@@ -225,9 +224,11 @@ namespace DisplayControlWrapper
             base.Top = Top;
             base.Left = Left;
             this.BringToFront();
+            EnableMoveImage = moveImg;
+            EnableZoomImage = zoomImg;
 
             windowHandle.OpenWindow(top, left, width, height, parentPtr);
-            //windowHandle.SetWindowExtents(top, left+100, width * 2, height * 2);
+
         }
         public void OpenWindow<T>(int top, int left, int width, int height, T parent) where T :Control
         {

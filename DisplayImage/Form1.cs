@@ -88,7 +88,5 @@ namespace DisplayControlWrapper.DisplayImage
             hWindow2.HSizeMode = HSizeMode.Zoom;
             this.Text = hWindow1.HSizeMode.ToString();
         }
-
-
     }
 }

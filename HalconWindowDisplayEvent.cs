@@ -102,7 +102,9 @@ namespace DisplayControlWrapper
                     hSizeMode != HSizeMode.AutoSize)
                 {
                     windowParam.DisplayRectangle = windowParam.OriginDisplayRectangle;
-                    windowParam.WindowHandle.SetWindowExtents(windowParam.OriginDisplayRectangle);
+                    windowParam.Parent.Width = windowParam.DisplayRectangle.Width;
+                    windowParam.Parent.Height = windowParam.DisplayRectangle.Height;
+                    windowParam.WindowHandle.SetWindowExtents(windowParam.DisplayRectangle);
                 }
                 switch (hSizeMode)
                 {
@@ -279,6 +281,7 @@ namespace DisplayControlWrapper
                         windowParam.WindowHandle.ClearWindow();
                         windowParam.WindowHandle.SetPaint(new HTuple("default"));
                         windowParam.WindowHandle.SetPart(row1, col1, row2, col2);
+                        DispImage();
                     }
                 }
                 catch (Exception)
@@ -302,6 +305,7 @@ namespace DisplayControlWrapper
                 windowParam.WindowHandle.SetPaint(new HTuple("default"));
                 windowParam.WindowHandle.SetPart(current_beginRow + btn_down_row - mouse_post_row, current_beginCol + btn_down_col - mouse_pose_col, current_endRow + btn_down_row - mouse_post_row, current_endCol + btn_down_col - mouse_pose_col);
                 windowParam.WindowHandle.ClearWindow();
+                windowParam.DispImage();
             }
             catch (Exception ex)
             {
