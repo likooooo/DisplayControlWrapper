@@ -1,4 +1,0 @@
-G:\Code\VSproject\github\DisplayControlWrapper\Sample\DisplayImage\obj\Debug\DisplayImage.csprojAssemblyReference.cache
-G:\Code\VSproject\github\DisplayControlWrapper\Sample\DisplayImage\obj\Debug\DisplayImage.Properties.Resources.resources
-G:\Code\VSproject\github\DisplayControlWrapper\Sample\DisplayImage\obj\Debug\DisplayImage.csproj.GenerateResource.cache
-G:\Code\VSproject\github\DisplayControlWrapper\Sample\DisplayImage\obj\Debug\DisplayImage.csproj.CoreCompileInputs.cache

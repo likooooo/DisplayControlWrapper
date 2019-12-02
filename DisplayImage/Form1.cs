@@ -19,27 +19,28 @@ namespace DisplayControlWrapper.DisplayImage
         {
             InitializeComponent();
 
-            //hWindow1 = new HWindowControl(panel1, this);
-            //hWindow2 = new HWindowControl(panel2, this);
+            ////1.
+            //hWindow1 = new HWindowControl();
+            //hWindow2 = new HWindowControl();
+            //hWindow1.OpenWindow( panel1);
+            //hWindow2.OpenWindow(panel2);
 
-            //panel1.Hide();
-            //panel2.Hide();
+            //2.
+            hWindow1 = new HWindowControl(panel1, true, true);
+            hWindow2 = new HWindowControl(panel2, true, true);
+
+            ////3.
             //hWindow1 = new HWindowControl(new Rectangle(panel1.Location, panel1.Size), this);
             //hWindow2 = new HWindowControl(new Rectangle(panel2.Location, panel2.Size), this);
-            //button1.Location = hWindow1.Location;
-            //button2.Location = hWindow2.Location;
-            //hWindow2.Focus();
-            hWindow1 = new HWindowControl();
-            hWindow2 = new HWindowControl();
+            //panel1.Hide();
+            //panel2.Hide();
 
-            hWindow1.OpenWindow(0, 0, panel1.Width, panel1.Height, panel1, panel1.Handle);
-            hWindow2.OpenWindow(0, 0, panel2.Width, panel2.Height, panel2, panel2.Handle);
         }
 
         private void Button1_Click(object sender, EventArgs e)
         {
             image = new HImageHandle();
-            image.ReadImage(@"6.png");
+            image.ReadImage(@"C:/Users/lk/Pictures/aa_Color.png");
             hWindow1.ImageHandle = image;
             hWindow2.ImageHandle = image;
             this.Text = hWindow1.HSizeMode.ToString();

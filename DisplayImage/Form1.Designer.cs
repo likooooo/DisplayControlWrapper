@@ -37,11 +37,12 @@
             this.btnStrechImage = new System.Windows.Forms.Button();
             this.btnZoom = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(709, 291);
+            this.button1.Location = new System.Drawing.Point(690, 497);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(120, 41);
             this.button1.TabIndex = 0;
@@ -51,7 +52,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(850, 291);
+            this.button2.Location = new System.Drawing.Point(831, 497);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(120, 41);
             this.button2.TabIndex = 1;
@@ -62,15 +63,14 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.panel1.Location = new System.Drawing.Point(30, 12);
+            this.panel1.Location = new System.Drawing.Point(12, 38);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(638, 426);
+            this.panel1.Size = new System.Drawing.Size(768, 350);
             this.panel1.TabIndex = 2;
-            //this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Panel1_MouseDown);
             // 
             // btnNormal
             // 
-            this.btnNormal.Location = new System.Drawing.Point(850, 366);
+            this.btnNormal.Location = new System.Drawing.Point(831, 572);
             this.btnNormal.Name = "btnNormal";
             this.btnNormal.Size = new System.Drawing.Size(120, 41);
             this.btnNormal.TabIndex = 5;
@@ -80,7 +80,7 @@
             // 
             // btnAuto
             // 
-            this.btnAuto.Location = new System.Drawing.Point(709, 366);
+            this.btnAuto.Location = new System.Drawing.Point(690, 572);
             this.btnAuto.Name = "btnAuto";
             this.btnAuto.Size = new System.Drawing.Size(120, 41);
             this.btnAuto.TabIndex = 4;
@@ -90,7 +90,7 @@
             // 
             // btnCenterImage
             // 
-            this.btnCenterImage.Location = new System.Drawing.Point(850, 413);
+            this.btnCenterImage.Location = new System.Drawing.Point(831, 619);
             this.btnCenterImage.Name = "btnCenterImage";
             this.btnCenterImage.Size = new System.Drawing.Size(120, 41);
             this.btnCenterImage.TabIndex = 7;
@@ -100,7 +100,7 @@
             // 
             // btnStrechImage
             // 
-            this.btnStrechImage.Location = new System.Drawing.Point(709, 413);
+            this.btnStrechImage.Location = new System.Drawing.Point(690, 619);
             this.btnStrechImage.Name = "btnStrechImage";
             this.btnStrechImage.Size = new System.Drawing.Size(120, 41);
             this.btnStrechImage.TabIndex = 6;
@@ -110,7 +110,7 @@
             // 
             // btnZoom
             // 
-            this.btnZoom.Location = new System.Drawing.Point(709, 460);
+            this.btnZoom.Location = new System.Drawing.Point(690, 666);
             this.btnZoom.Name = "btnZoom";
             this.btnZoom.Size = new System.Drawing.Size(120, 41);
             this.btnZoom.TabIndex = 8;
@@ -120,18 +120,25 @@
             // 
             // panel2
             // 
-            this.panel2.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.panel2.Location = new System.Drawing.Point(993, 25);
+            this.panel2.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.panel2.Location = new System.Drawing.Point(1014, 98);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(462, 595);
+            this.panel2.Size = new System.Drawing.Size(462, 870);
             this.panel2.TabIndex = 9;
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1488, 24);
+            this.menuStrip1.TabIndex = 10;
+            this.menuStrip1.Text = "menuStrip1";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1488, 721);
-            this.Controls.Add(this.panel2);
+            this.ClientSize = new System.Drawing.Size(1488, 980);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.btnZoom);
             this.Controls.Add(this.button1);
@@ -139,10 +146,14 @@
             this.Controls.Add(this.btnStrechImage);
             this.Controls.Add(this.btnNormal);
             this.Controls.Add(this.btnAuto);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -157,6 +168,7 @@
         private System.Windows.Forms.Button btnStrechImage;
         private System.Windows.Forms.Button btnZoom;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.MenuStrip menuStrip1;
     }
 }
 

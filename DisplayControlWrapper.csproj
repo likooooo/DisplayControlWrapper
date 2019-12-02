@@ -45,12 +45,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HalconWindowDisplayEvent.cs" />
-    <Compile Include="HImageHandle.cs" />
-    <Compile Include="HWindowControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="HWindowHandle.cs" />
+    <Compile Include="HalconWindowDisplayEvent\HalconWindowDisplayEvent.cs" />
+    <Compile Include="HalconWindowDisplayEvent\HalconWindowDisplayEventParam.cs" />
+    <Compile Include="HalconWindowDisplayEvent\HalconWindowDisplayEventSet.cs" />
+    <Compile Include="HalconHandle\HImageHandle.cs" />
+    <Compile Include="HalconHandle\HReginHandle.cs" />
+    <Compile Include="HalconHandle\HShapeModelHandle.cs" />
+    <Compile Include="HWindowControl.cs" />
+    <Compile Include="HalconHandle\HWindowHandle.cs" />
     <Compile Include="PictureBoxControl.cs">
       <SubType>Component</SubType>
     </Compile>
