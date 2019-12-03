@@ -8,47 +8,92 @@ using System.Text;
 using System.Windows.Forms;
 using DisplayControlWrapper;
 
-namespace HalconMeusreHelper.Window
+namespace DisplayImage
 {
     public partial class FormDisplay : Form,I_MenuStripEvent
     {
+        HWindowControl hwindowControl;
         MenuStripEvent menuEvent;
-        public DisplayControlWrapper.HWindowControl WindowHandle { get { return menuEvent.WindowHandle; } }
+        HStatusStrip statusStrip;
+        HTreeView hTreeView;
+
+
+        public HWindowControl WindowHandle { get { return hwindowControl; } }
         public HImageHandle CurrentImage { get { return menuEvent.CurrentImage; } }
 
         public  HShapeModelHandle  CurrentShm { get { return menuEvent.CurrentShm; } }
-        public HReginHandle CurrentROI { get { return menuEvent.CurrentROI; } }
-        public List<HReginHandle> RegionList { get { return menuEvent.RegionList; } }
+        public HRegionHandle CurrentROI { get { return menuEvent.CurrentROI; } }
+        public List<HRegionDraw> RegionList { get { return menuEvent.RegionList; } }
  
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="formDisplays">窗口句柄的集合，用于定义当前窗口的Id,并将当前窗口加入到窗口集合中</param>
-        public FormDisplay(List<FormDisplay> formDisplays)
+        public FormDisplay(List<FormDisplay> formDisplaysArry)
         {           
             InitializeComponent();
             //标题赋值
-            formDisplays.Add(this);
-            Text += formDisplays.Count.ToString("0000");
-            DisplayControlWrapper.HWindowControl hwindowControl = new DisplayControlWrapper.HWindowControl(panMain);
-            menuEvent = new MenuStripEvent(hwindowControl);
-           // panMain.Hide();
-            DefaultValue.SetFont(this, DefaultValue.Font);
+            formDisplaysArry.Add(this);
+            Text += formDisplaysArry.Count.ToString("0000");
+
+            statusStrip = new HStatusStrip(true, true, true);
+            hTreeView = new HTreeView();
+            this.tableDispWindow.Controls.Add(this.hTreeView, 0, 0);
+            this.splitHorzon.Panel2.Controls.Add(statusStrip);
+
+            hwindowControl = new HWindowControl(panMain);
+            hwindowControl.SetDraw();
+            hwindowControl.EnableZoomImage = true;
+            hwindowControl.EnableMoveImage = true;
+            hwindowControl.EnableGetImageInfomation(statusStrip);
+            hwindowControl.EnableRegionListTreeView(hTreeView);
+            Text += ";     SizeMode:" + WindowHandle.HSizeMode.ToString();
+            menuEvent = new MenuStripEvent(hwindowControl);         
+            DefaultValue.SetFont(this, DefaultValue.DefaultFont);
         }
 
 
-        public void ReadTemplateImage(object sender, EventArgs e){menuEvent.ReadTemplateImage(sender,e);}
+        public void ReadTemplateImage(object sender, EventArgs e)
+        {
+            menuEvent.ReadTemplateImage(sender,e);
+            hTreeView.AddImageNode();
+        }
         public void ReadShapeModel(object sender, EventArgs e){menuEvent.ReadShapeModel(sender,e);}
         public void SaveShapeModel(object sender, EventArgs e){menuEvent.SaveShapeModel(sender,e);}
 
 
         //绘制
-        public void DrawCircle(object sender, EventArgs e){menuEvent.DrawCircle(sender,e);}
-        public void DrawEllipse(object sender, EventArgs e){menuEvent.DrawEllipse(sender,e);}
-        public void DrawFitRectangle(object sender, EventArgs e){menuEvent.DrawFitRectangle(sender,e);}
-        public void DrawRotRectangle(object sender, EventArgs e){menuEvent.DrawRotRectangle(sender,e);}
-        public void DrawRegion(object sender, EventArgs e){menuEvent.DrawRegion(sender,e);}
+        public void DrawCircle(object sender, EventArgs e)
+        {
+            menuEvent.DrawCircle(sender,e);
+            hTreeView.AddRegion(menuEvent.RegionList.Last());
+            hwindowControl.DispImage();
+        }
+        public void DrawEllipse(object sender, EventArgs e)
+        {
+            menuEvent.DrawEllipse(sender,e);
+            hTreeView.AddRegion(menuEvent.RegionList.Last());
+            hwindowControl.DispImage();
+        }
+        public void DrawFitRectangle(object sender, EventArgs e)
+        {
+            menuEvent.DrawFitRectangle(sender,e);
+            hTreeView.AddRegion(menuEvent.RegionList.Last());
+            hwindowControl.DispImage();
+        }
+        public void DrawRotRectangle(object sender, EventArgs e)
+        {
+            menuEvent.DrawRotRectangle(sender,e);
+            hTreeView.AddRegion(menuEvent.RegionList.Last());
+            hwindowControl.DispImage();
+        }
+        public void DrawRegion(object sender, EventArgs e)
+        {
+            menuEvent.DrawRegion(sender,e);
+            hTreeView.AddRegion(menuEvent.RegionList.Last());
+            hwindowControl.DispImage();
+        }
 
         //删除绘制的Region
         public void RmSelectRegion(object sender, EventArgs e){menuEvent.RmSelectRegion(sender,e);}
@@ -67,34 +112,45 @@ namespace HalconMeusreHelper.Window
 
         private void BtnAutoSize_Click(object sender, EventArgs e)
         {
+            string oldModeName = WindowHandle.HSizeMode.ToString();
             this.WindowHandle.HSizeMode = HSizeMode.AutoSize;
+            Text = Text.Replace(oldModeName, WindowHandle.HSizeMode.ToString());
         }
 
         private void BtnCenterImage_Click(object sender, EventArgs e)
         {
+            string oldModeName = WindowHandle.HSizeMode.ToString();
             this.WindowHandle.HSizeMode = HSizeMode.CenterImage;
+            Text = Text.Replace(oldModeName, WindowHandle.HSizeMode.ToString());
         }
 
         private void BtnNormal_Click(object sender, EventArgs e)
         {
+            string oldModeName = WindowHandle.HSizeMode.ToString();
             this.WindowHandle.HSizeMode = HSizeMode.Normal;
+            Text = Text.Replace(oldModeName, WindowHandle.HSizeMode.ToString());
         }
 
         private void BtnStrechImage_Click(object sender, EventArgs e)
         {
+            string oldModeName = WindowHandle.HSizeMode.ToString();
             this.WindowHandle.HSizeMode = HSizeMode.StrechImage;
+            Text = Text.Replace(oldModeName, WindowHandle.HSizeMode.ToString());
         }
 
         private void BtnZoom_Click(object sender, EventArgs e)
         {
-
+            string oldModeName = WindowHandle.HSizeMode.ToString();
+            this.WindowHandle.HSizeMode = HSizeMode.Zoom;
+            Text = Text.Replace(oldModeName, WindowHandle.HSizeMode.ToString());
         }
-
 
         private void FormDisplay_Resize(object sender, EventArgs e)
         {
-            this.WindowHandle.WindowHandle.SetWindowExtents(0, 0, panMain.Width, panMain.Height);
-            this.WindowHandle.DispImage();
+            if (splitHorzon.Height < statusStrip.Height) return;
+            splitHorzon.SplitterDistance = splitHorzon.Height - statusStrip.Height;
+            tableDispWindow.Width = splitHorzon.Panel1.Width;
+            tableDispWindow.Height = splitHorzon.Panel1.Height;
         }
     }
 }

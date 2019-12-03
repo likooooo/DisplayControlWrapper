@@ -6,9 +6,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using DisplayControlWrapper;
 
-
-namespace DisplayControlWrapper.DisplayImage
+namespace DisplayImage
 {
     public partial class Form1 : Form
     {

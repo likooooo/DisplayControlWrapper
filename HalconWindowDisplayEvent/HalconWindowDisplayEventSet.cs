@@ -16,7 +16,7 @@ namespace DisplayControlWrapper
         new Rectangle DockerRectangle { get; }
         new HWindowHandle WindowHandle { get; }
         new HImageHandle ImageHandle { get; }
-        void DispImage();
+        bool DispImage();
         void SetDispNormal();
         void SetDispZoom();
 
@@ -43,6 +43,7 @@ namespace DisplayControlWrapper
             {
                 if (base.HSizeMode == value) return;
                 base.HSizeMode = value;
+                flagHSizeModeChanged = true;
                 DispImage();
             }
         }
@@ -103,13 +104,16 @@ namespace DisplayControlWrapper
             {
                 if (base.ImageHandle != null) base.ImageHandle.Dispose();
                 base.ImageHandle = value;
-                if (WindowHandle.Active) WindowHandle.DisplayImage(value);
+                 DispImage();
             }
         }
 
-        public HalconWindowDisplayEventSet():base() { }
-        public HalconWindowDisplayEventSet(Control docker) : base(docker) { }
 
+        public HalconWindowDisplayEventSet():base() { }
+        public HalconWindowDisplayEventSet(Control docker) : base(docker)
+        {
+         
+        }
         public HalconWindowDisplayEventSet(Control docker, HWindowHandle windowHandle, HImageHandle imageHandle) : base(docker, windowHandle, imageHandle) { }
 
 
@@ -118,9 +122,9 @@ namespace DisplayControlWrapper
         /// <summary>
         /// 以HSizeMode定义的方式显示图片
         /// </summary>
-        public void DispImage()
+        public virtual bool DispImage()
         {
-            if (!(HasWindowHandle && HasImageHandle == true)) return;
+            if (!(WindowHandle.Active && ImageHandle.Active)) return false;
             //查看HSizeMode是否有改变
             if (flagHSizeModeChanged)
             {
@@ -153,6 +157,7 @@ namespace DisplayControlWrapper
             }
             WindowHandle.ClearWindow();
             WindowHandle.DisplayImage(ImageHandle);
+            return true;
         }
 
 

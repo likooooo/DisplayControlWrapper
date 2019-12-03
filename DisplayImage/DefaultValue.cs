@@ -5,11 +5,12 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace HalconMeusreHelper
+namespace DisplayImage
 {
     public class DefaultValue
     {
-        public static Font Font = new Font("宋体", 15);
+        public static Font treeFont = new Font("宋体", 10);
+        public static Font DefaultFont = new Font("宋体", 15);
 
         public static void SetFont(Control parent, Font font)
         {

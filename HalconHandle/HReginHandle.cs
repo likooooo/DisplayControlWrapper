@@ -15,14 +15,12 @@ namespace DisplayControlWrapper
         void WriteRegion(string filePath);
         void Dispose();
         void Display(HWindowHandle windowHandle);
-
         void GenCircle(double row,double  col,double radius);
-
         void GenEllipse(double row1, double col1, double phi, double radius1, double radius2);
         void GenRectangle1(double row1, double col1, double row2, double col2);
         void GenRectangle2(double row1, double col1, double  phi, double  length1, double  length2);
     }
-    public class HReginHandle: I_HRegionHandle
+    public class HRegionHandle: I_HRegionHandle
     {
         HRegion region;
         public HRegion HRegion
@@ -38,8 +36,8 @@ namespace DisplayControlWrapper
             }
         }
 
-        public HReginHandle() { region = new HRegion(); }
-        public HReginHandle(HRegion region) { this.region = region; }
+        public HRegionHandle() { region = new HRegion(); }
+        public HRegionHandle(HRegion region) { this.region = region; }
 
 
         public void ReadRegion(string filePath) { region.ReadRegion(filePath); }
@@ -58,9 +56,9 @@ namespace DisplayControlWrapper
         public void GenRectangle2(double row1, double col1, double phi, double length1, double length2) => HRegion.GenRectangle2(row1, col1, phi, length1, length2);
 
 
-        public static implicit operator HReginHandle(HRegion region)
+        public static implicit operator HRegionHandle(HRegion region)
         {
-            return new HReginHandle(region);
+            return new HRegionHandle(region);
         }
     }
 }

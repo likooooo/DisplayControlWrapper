@@ -4,19 +4,34 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace DisplayControlWrapper
 {
+    class Description_HSizeMode : Attribute
+    {
+        public string Text;
+        public Description_HSizeMode(string text)
+        {
+            Text = text;
+        }
+    }
     /// <summary>
     /// HWindowControl的显示模式，类似于PictureBox.SizeMode
     /// </summary>
-    public enum HSizeMode
+
+    public enum HSizeMode:byte
     {
+        [Description_HSizeMode("显示原图")]
         Normal,
+        [Description_HSizeMode("当前窗口被图像完全填充")]
         StrechImage,
+        [Description_HSizeMode("显示原图，并且将窗口设置到原图大小")]
         AutoSize,
+        [Description_HSizeMode("显示图像中心位置")]
         CenterImage,
-        Zoom,
+        [Description_HSizeMode("将图像以原始比例完全显示至当前窗口")]
+        Zoom,       
     }
 
     public interface I_HalconWindowDisplayEventPara
@@ -27,14 +42,10 @@ namespace DisplayControlWrapper
         Rectangle DockerRectangle { get; set; }
         Rectangle OriginDockeRectangle { get; set; }
 
-        bool HasWindowHandle { get; }
         HWindowHandle WindowHandle { get; }
-        bool HasImageHandle { get; }
         HImageHandle ImageHandle { get; set; }
 
         HSizeMode HSizeMode { get; set; }
-
-
         }
 
     /// <summary>
@@ -53,11 +64,8 @@ namespace DisplayControlWrapper
         //最初的Docker显示区域
         public Rectangle OriginDockeRectangle { get; set; }
 
-        public bool HasWindowHandle { get { return (WindowHandle!=null); } }
 
         public HWindowHandle WindowHandle { get; set; }
-
-        public bool HasImageHandle { get { return  (ImageHandle != null); } }
 
         public HImageHandle ImageHandle { get; set; }
 

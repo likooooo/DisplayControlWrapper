@@ -51,12 +51,21 @@
     <Compile Include="HalconHandle\HImageHandle.cs" />
     <Compile Include="HalconHandle\HReginHandle.cs" />
     <Compile Include="HalconHandle\HShapeModelHandle.cs" />
+    <Compile Include="HStatusStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="HTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="HWindowControl.cs" />
     <Compile Include="HalconHandle\HWindowHandle.cs" />
+    <Compile Include="HWindowDrawType.cs" />
+    <Compile Include="MenuStripWrapper\MenuStripControl.cs" />
     <Compile Include="PictureBoxControl.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XmlControl.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

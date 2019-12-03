@@ -12,7 +12,7 @@ namespace DisplayControlWrapper
     {
         bool EnableZoomImage { get; }
         bool EnableMoveImage { get; }
-
+        //bool EnableGetImageInfomation { get; }
         new HImageHandle ImageHandle { get; set; }
         new HWindowHandle WindowHandle { get; set; }
 
@@ -20,18 +20,24 @@ namespace DisplayControlWrapper
         event MouseEventHandler MouseMove;
         event MouseEventHandler MouseUp;
         event MouseEventHandler MouseWheel;
+        event MouseEventHandler RegistWindowGetImageInfomation;
         void HMouseDown(object sender, MouseEventArgs e);
         void HMouseMove(object sender, MouseEventArgs e);
         void HMouseUp(object sender, MouseEventArgs e);
         void HMouseWheel(object sender, MouseEventArgs e);
+        void EnableGetImageInfomation(HStatusStrip statusStrip, bool flag = true);
+        void HMouseMove_GetImageInfomation(object sender, MouseEventArgs e);
     }
 
-    public delegate void TestDelegate();
+
     /// <summary>
     /// 定义HWindowControl窗体的事件
     /// </summary>
     public class HalconWindowDisplayEvent : HalconWindowDisplayEventSet, I_HalconWindowDisplayEvent
     {
+        HStatusStrip currentStatusStrip;
+        HTreeView currentTreeView;
+        
         //MouseDown标志
         bool flag_but_down = false;
         //MouseDown时，鼠标的位置
@@ -82,35 +88,35 @@ namespace DisplayControlWrapper
             }
         }
 
-        public new HImageHandle ImageHandle
+
+        bool enableGetInfomation;
+        bool SetEnableGetImageInfomation
         {
             get
-            {
-                return base.ImageHandle;
-            }
+            { return enableGetInfomation; }
             set
             {
-                base.ImageHandle = value;
-                if (WindowHandle.Active) DispImage();
+                if (enableGetInfomation == value) return;
+                enableGetInfomation = value;
+                if (enableGetInfomation) MouseMove += (object sender, MouseEventArgs e) => { HMouseMove_GetImageInfomation(sender, e); };
+                else MouseMove -= (object sender, MouseEventArgs e) => { HMouseMove_GetImageInfomation(sender, e); };
             }
         }
 
-        public new HWindowHandle WindowHandle
+        bool setEnableTreeViewRegionDisplay;
+        bool SetEnableTreeViewRegionDisplay
         {
             get
-            {
-                return base.WindowHandle;
-            }
+            { return setEnableTreeViewRegionDisplay; }
             set
             {
-                base.WindowHandle = value;
+                if (setEnableTreeViewRegionDisplay == value) return;
+                setEnableTreeViewRegionDisplay = value;
+                if (!setEnableTreeViewRegionDisplay) currentTreeView = null;
             }
         }
-
-     
 
         object objectLock = new Object();
-
         public event MouseEventHandler MouseDown
         {
             add
@@ -179,17 +185,64 @@ namespace DisplayControlWrapper
                 }
             }
         }
+        public event MouseEventHandler RegistWindowGetImageInfomation
+        {
+            add
+            {
+                lock (objectLock)
+                {
+                    Docker.MouseMove += value;
+                }
+            }
+            remove
+            {
+                lock (objectLock)
+                {
+                    Docker.MouseMove -= value;
+                }
+            }
+        }
+
 
         public HalconWindowDisplayEvent() : base() { }
-        public HalconWindowDisplayEvent(Control docker) : base(docker) { }
-
+        public HalconWindowDisplayEvent(Control docker) : base(docker)
+        {
+            //Docker的大小改变之后，要让窗体大小也改变
+            Docker.Parent.Resize += new EventHandler(ParentResize);
+        }
         public HalconWindowDisplayEvent(Control docker, HWindowHandle windowHandle, HImageHandle imageHandle) : base(docker, windowHandle, imageHandle) { }
 
 
+        public void EnableRegionListTreeView(HTreeView treeView, bool flag = true)
+        {
+            SetEnableGetImageInfomation = flag;
+            currentTreeView = treeView;
+        }
+        public override bool DispImage()
+        {
+            bool isDisplay = base.DispImage();
+            if (currentTreeView != null)
+            {
+                foreach (var region in currentTreeView.HRegionDraw)
+                {
+                    WindowHandle.DisplayRegion(region);
+                }
+            }
+            return isDisplay;
+        }
+
+        void ParentResize(object sender, EventArgs eventArgs)
+        {
+            if (!WindowHandle.Active) return;
+            DockerRectangle = new Rectangle(DockerRectangle.X, DockerRectangle.Y, Docker.Parent.Width, Docker.Parent.Height);
+            DisplayRectangleInDocker = new Rectangle(0, 0, Docker.Parent.Width, Docker.Parent.Height);
+            OriginDockeRectangle = DockerRectangle;
+            if (ImageHandle.Active) DispImage();
+        }
 
         public virtual void HMouseDown(object sender, MouseEventArgs e)
         {
-            if (!WindowHandle.Active || ImageHandle == null) return;
+            if (!WindowHandle.Active || !ImageHandle.Active) return;
             flag_but_down = true;
             btn_down_row = e.Y;
             btn_down_col = e.X;
@@ -213,8 +266,31 @@ namespace DisplayControlWrapper
 
         public virtual void HMouseWheel(object sender, MouseEventArgs e)
         {
-            if (!WindowHandle.Active || ImageHandle == null) return;
+            if (!WindowHandle.Active || !ImageHandle.Active) return;
             MouseWheel_ImageZoom(e.Delta, e.Y, e.X);
+        }
+
+        public void EnableGetImageInfomation(HStatusStrip statusStrip, bool flag = true)
+        {
+            SetEnableGetImageInfomation = flag;
+            currentStatusStrip = statusStrip;
+        }
+        public virtual void  HMouseMove_GetImageInfomation(object sender, MouseEventArgs e)
+        {
+            if (!WindowHandle.Active || !ImageHandle.Active) return;
+            int row, col, r, g, b;
+            try
+            {        
+                row = (int)(1.0 * ViewRectangle.Height / DisplayRectangleInDocker.Height * e.Y);
+                col = (int)(1.0 * ViewRectangle.Width / DisplayRectangleInDocker.Width * e.X);
+                ImageHandle.GetPixlVal(row, col, out r, out g, out b);
+                currentStatusStrip.SetLabRGB(r, g, b);
+                currentStatusStrip.SetLabRowCol(row, col);
+            }
+            catch 
+            {
+
+            }
         }
     }
 }

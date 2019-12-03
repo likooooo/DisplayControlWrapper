@@ -13,6 +13,7 @@ namespace DisplayControlWrapper
     /// </summary>
     public interface I_HWindowControl : I_HalconWindowDisplayEvent
     {
+        void SetDraw(string mode = "margin");
         void OpenWindow(Control docker);
         void OpenWindow(Control docker, bool zoomImg = true, bool moveImg = true);
         void OpenWindow(int top, int left, int width, int height, Control parent, bool zoomImg = true, bool moveImg = true);
@@ -38,8 +39,15 @@ namespace DisplayControlWrapper
         {
             OpenWindow(docker, zoomImg, moveImg);
         }
+        public HWindowControl(Control docker, HStatusStrip hStatusStrip, bool zoomImg = true, bool moveImg = true) : this(docker,zoomImg,moveImg)
+        {
+            EnableGetImageInfomation(hStatusStrip);
+        }
 
-
+        public void SetDraw(string mode="margin")
+        {
+            WindowHandle.SetDraw(mode);
+        }
         public void OpenWindow(Control docker)
         {
             Docker = docker;

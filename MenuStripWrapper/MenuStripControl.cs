@@ -6,15 +6,15 @@ using System.Windows.Forms;
 using System.Drawing;
 using DisplayControlWrapper;
 
-namespace HalconMeusreHelper
+namespace DisplayImage
 {
-    interface I_MenuStripEvent
+    public interface I_MenuStripEvent
     {
         DisplayControlWrapper.HWindowControl WindowHandle { get; }
         HImageHandle CurrentImage { get; }
         HShapeModelHandle CurrentShm { get; }
-        HReginHandle CurrentROI { get; }
-        List<HReginHandle> RegionList { get; }
+        HRegionHandle CurrentROI { get; }
+        List<HRegionDraw> RegionList { get; }
         void ReadTemplateImage(object sender, EventArgs e);
         void ReadShapeModel(object sender, EventArgs e);
         void SaveShapeModel(object sender, EventArgs e);
@@ -44,7 +44,7 @@ namespace HalconMeusreHelper
     }
 
 
-    class MenuStripEvent : I_MenuStripEvent
+    public class MenuStripEvent : I_MenuStripEvent
     {
         DisplayControlWrapper.HWindowControl hWindowControl;
         public DisplayControlWrapper.HWindowControl WindowHandle { get { return hWindowControl; } }
@@ -56,10 +56,10 @@ namespace HalconMeusreHelper
         HShapeModelHandle currentShm;
         public HShapeModelHandle CurrentShm { get { return currentShm; } }
 
-        public HReginHandle CurrentROI { get { return RegionList.Last(); } }
+        public HRegionHandle CurrentROI { get { return RegionList.Last(); } }
 
-        List<HReginHandle> regionList;
-        public List<HReginHandle> RegionList { get { return regionList; } }
+        List<HRegionDraw> regionList;
+        public List<HRegionDraw> RegionList { get { return regionList; } }
 
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace HalconMeusreHelper
         public MenuStripEvent(DisplayControlWrapper.HWindowControl windowHandle)
         {
             this.hWindowControl = windowHandle;
-            regionList = new List<HReginHandle>();
+            regionList = new List<HRegionDraw>();
         }
 
 
@@ -108,46 +108,67 @@ namespace HalconMeusreHelper
         //绘制
         public void DrawCircle(object sender, EventArgs e)
         {
-            HReginHandle circleRegion = new HReginHandle();
-            double row, col, radius;
             bool temp1, temp2;
             temp1 = hWindowControl.EnableMoveImage;
             temp2 = hWindowControl.EnableZoomImage;
             hWindowControl.EnableMoveImage = false;
             hWindowControl.EnableZoomImage = false;
-            windowHandle.DrawCircle(out row, out col, out radius);
+            HCircle region = windowHandle.DrawCircle();
             hWindowControl.EnableMoveImage = temp1;
             hWindowControl.EnableZoomImage = temp2;
-            circleRegion.GenCircle(row, col, radius);
-            regionList.Add(circleRegion);
+            regionList.Add(region);
         }
         public void DrawEllipse(object sender, EventArgs e)
         {
-            HReginHandle ellipseRegion = new HReginHandle();
-            double row1, col1, phi, radius1, radius2;
-            windowHandle.DrawEllipse(out row1, out col1, out phi, out radius1, out radius2);
-            ellipseRegion.GenEllipse(row1, col1, phi, radius1, radius2);
-            regionList.Add(ellipseRegion);
+            bool temp1, temp2;
+            temp1 = hWindowControl.EnableMoveImage;
+            temp2 = hWindowControl.EnableZoomImage;
+            hWindowControl.EnableMoveImage = false;
+            hWindowControl.EnableZoomImage = false;
+            HEllipse region = windowHandle.DrawEllipse();
+            hWindowControl.EnableMoveImage = temp1;
+            hWindowControl.EnableZoomImage = temp2;
+
+            regionList.Add(region);
+
         }
         public void DrawFitRectangle(object sender, EventArgs e)
         {
-            HReginHandle rec1Region = new HReginHandle();
-            double row1, col1, row2, col2;
-            windowHandle.DrawRectangle1(out row1, out col1, out row2, out col2);
-            rec1Region.GenRectangle1(row1, col1, row2, col2);
-            regionList.Add(rec1Region);
+            bool temp1, temp2;
+            temp1 = hWindowControl.EnableMoveImage;
+            temp2 = hWindowControl.EnableZoomImage;
+            hWindowControl.EnableMoveImage = false;
+            hWindowControl.EnableZoomImage = false;
+            HFitRectangle region = windowHandle.DrawRectangle1();
+            hWindowControl.EnableMoveImage = temp1;
+            hWindowControl.EnableZoomImage = temp2;
+
+            regionList.Add(region);
         }
         public void DrawRotRectangle(object sender, EventArgs e)
         {
-            HReginHandle rec2Region = new HReginHandle();
-            double row1, col1, phi, length1, length2;
-            windowHandle.DrawRectangle2(out row1, out col1, out phi, out length1, out length2);
-            rec2Region.GenRectangle2(row1, col1, phi, length1, length2);
-            regionList.Add(rec2Region);
+            bool temp1, temp2;
+            temp1 = hWindowControl.EnableMoveImage;
+            temp2 = hWindowControl.EnableZoomImage;
+            hWindowControl.EnableMoveImage = false;
+            hWindowControl.EnableZoomImage = false;
+            HRotRectangle region = windowHandle.DrawRectangle2();
+            hWindowControl.EnableMoveImage = temp1;
+            hWindowControl.EnableZoomImage = temp2;
+
+            regionList.Add(region);
         }
         public void DrawRegion(object sender, EventArgs e)
         {
-            HReginHandle region = windowHandle.DrawRegion();
+            bool temp1, temp2;
+            temp1 = hWindowControl.EnableMoveImage;
+            temp2 = hWindowControl.EnableZoomImage;
+            hWindowControl.EnableMoveImage = false;
+            hWindowControl.EnableZoomImage = false;
+            HAnyRegion region = windowHandle.DrawRegion();
+            hWindowControl.EnableMoveImage = temp1;
+            hWindowControl.EnableZoomImage = temp2;
+
             regionList.Add(region);
         }
 
@@ -171,7 +192,7 @@ namespace HalconMeusreHelper
         //Region的运算
         public void Collection(object sender, EventArgs e)
         {
-            HReginHandle regionCollection = new HReginHandle();
+            HRegionHandle regionCollection = new HRegionHandle();
             throw new Exception("未完成");
         }
         public void Intersection(object sender, EventArgs e)
@@ -191,13 +212,13 @@ namespace HalconMeusreHelper
         //ROI的操作
         public void OpenROIFromFile(object sender, EventArgs e)
         {
-            HReginHandle region = new HReginHandle();
+            HRegionHandle region = new HRegionHandle();
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (InitialDialog(openFileDialog, "读取ROI文件"))
             {
                 region.ReadRegion(openFileDialog.FileName);
             }
-            regionList.Add(region);
+            regionList.Add((HRegionDraw)region);
         }
         public void SaveROI(object sender, EventArgs e)
         {

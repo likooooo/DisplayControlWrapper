@@ -1,4 +1,4 @@
-﻿namespace HalconMeusreHelper.Window
+﻿namespace DisplayImage
 {
     partial class FormDisplay
     {
@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.panMain = new System.Windows.Forms.Panel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.btnClearWindow = new System.Windows.Forms.ToolStripMenuItem();
             this.btnHSizeMode = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,17 +61,16 @@
             this.btnOpenROIFromFile = new System.Windows.Forms.ToolStripMenuItem();
             this.btnSaveROI = new System.Windows.Forms.ToolStripMenuItem();
             this.参数PToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.splitHorzon = new System.Windows.Forms.SplitContainer();
+            this.tableDispWindow = new System.Windows.Forms.TableLayoutPanel();
+            this.panMain = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.menuStrip1.SuspendLayout();
+            this.splitHorzon.Panel1.SuspendLayout();
+            this.splitHorzon.SuspendLayout();
+            this.tableDispWindow.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // panMain
-            // 
-            this.panMain.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.panMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panMain.Location = new System.Drawing.Point(0, 25);
-            this.panMain.Name = "panMain";
-            this.panMain.Size = new System.Drawing.Size(800, 425);
-            this.panMain.TabIndex = 0;
             // 
             // menuStrip1
             // 
@@ -110,35 +108,35 @@
             // btnAutoSize
             // 
             this.btnAutoSize.Name = "btnAutoSize";
-            this.btnAutoSize.Size = new System.Drawing.Size(180, 22);
+            this.btnAutoSize.Size = new System.Drawing.Size(151, 22);
             this.btnAutoSize.Text = "AutoSize";
             this.btnAutoSize.Click += new System.EventHandler(this.BtnAutoSize_Click);
             // 
             // btnCenterImage
             // 
             this.btnCenterImage.Name = "btnCenterImage";
-            this.btnCenterImage.Size = new System.Drawing.Size(180, 22);
+            this.btnCenterImage.Size = new System.Drawing.Size(151, 22);
             this.btnCenterImage.Text = "CenterImage";
             this.btnCenterImage.Click += new System.EventHandler(this.BtnCenterImage_Click);
             // 
             // btnNormal
             // 
             this.btnNormal.Name = "btnNormal";
-            this.btnNormal.Size = new System.Drawing.Size(180, 22);
+            this.btnNormal.Size = new System.Drawing.Size(151, 22);
             this.btnNormal.Text = "Normal";
             this.btnNormal.Click += new System.EventHandler(this.BtnNormal_Click);
             // 
             // btnStrechImage
             // 
             this.btnStrechImage.Name = "btnStrechImage";
-            this.btnStrechImage.Size = new System.Drawing.Size(180, 22);
+            this.btnStrechImage.Size = new System.Drawing.Size(151, 22);
             this.btnStrechImage.Text = "StrechImage";
             this.btnStrechImage.Click += new System.EventHandler(this.BtnStrechImage_Click);
             // 
             // btnZoom
             // 
             this.btnZoom.Name = "btnZoom";
-            this.btnZoom.Size = new System.Drawing.Size(180, 22);
+            this.btnZoom.Size = new System.Drawing.Size(151, 22);
             this.btnZoom.Text = "Zoom";
             this.btnZoom.Click += new System.EventHandler(this.BtnZoom_Click);
             // 
@@ -163,33 +161,33 @@
             // btnOpenImage
             // 
             this.btnOpenImage.Name = "btnOpenImage";
-            this.btnOpenImage.Size = new System.Drawing.Size(180, 22);
+            this.btnOpenImage.Size = new System.Drawing.Size(160, 22);
             this.btnOpenImage.Text = "打开模板图像(I)";
             this.btnOpenImage.Click += new System.EventHandler(this.ReadTemplateImage);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(157, 6);
             // 
             // btnLoadTemplate
             // 
             this.btnLoadTemplate.Name = "btnLoadTemplate";
-            this.btnLoadTemplate.Size = new System.Drawing.Size(180, 22);
+            this.btnLoadTemplate.Size = new System.Drawing.Size(160, 22);
             this.btnLoadTemplate.Text = "加载模板(L)";
             this.btnLoadTemplate.Click += new System.EventHandler(this.ReadShapeModel);
             // 
             // btnSaveTemplate
             // 
             this.btnSaveTemplate.Name = "btnSaveTemplate";
-            this.btnSaveTemplate.Size = new System.Drawing.Size(180, 22);
+            this.btnSaveTemplate.Size = new System.Drawing.Size(160, 22);
             this.btnSaveTemplate.Text = "保存模板(S)";
             this.btnSaveTemplate.Click += new System.EventHandler(this.SaveShapeModel);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(157, 6);
             // 
             // btnROI
             // 
@@ -326,27 +324,75 @@
             this.参数PToolStripMenuItem.Size = new System.Drawing.Size(59, 21);
             this.参数PToolStripMenuItem.Text = "参数(P)";
             // 
+            // splitHorzon
+            // 
+            this.splitHorzon.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitHorzon.Location = new System.Drawing.Point(0, 25);
+            this.splitHorzon.Name = "splitHorzon";
+            this.splitHorzon.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitHorzon.Panel1
+            // 
+            this.splitHorzon.Panel1.Controls.Add(this.tableDispWindow);
+            this.splitHorzon.Panel2MinSize = 10;
+            this.splitHorzon.Size = new System.Drawing.Size(800, 425);
+            this.splitHorzon.SplitterDistance = 382;
+            this.splitHorzon.TabIndex = 3;
+            // 
+            // tableDispWindow
+            // 
+            this.tableDispWindow.ColumnCount = 2;
+            this.tableDispWindow.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
+            this.tableDispWindow.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 85F));
+            this.tableDispWindow.Controls.Add(this.panel1, 1, 0);
+            this.tableDispWindow.Location = new System.Drawing.Point(0, 3);
+            this.tableDispWindow.Name = "tableDispWindow";
+            this.tableDispWindow.RowCount = 1;
+            this.tableDispWindow.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableDispWindow.Size = new System.Drawing.Size(797, 376);
+            this.tableDispWindow.TabIndex = 0;
+            // 
+            // panMain
+            // 
+            this.panMain.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.panMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panMain.Location = new System.Drawing.Point(0, 0);
+            this.panMain.Name = "panMain";
+            this.panMain.Size = new System.Drawing.Size(672, 370);
+            this.panMain.TabIndex = 5;
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.panel1.Controls.Add(this.panMain);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(122, 3);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(672, 370);
+            this.panel1.TabIndex = 4;
+            // 
             // FormDisplay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.panMain);
+            this.Controls.Add(this.splitHorzon);
             this.Controls.Add(this.menuStrip1);
             this.Name = "FormDisplay";
             this.Text = "图形窗口：";
-            //this.ResizeEnd += new System.EventHandler(this.FormDisplay_ResizeEnd);
             this.Resize += new System.EventHandler(this.FormDisplay_Resize);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.splitHorzon.Panel1.ResumeLayout(false);
+            this.splitHorzon.ResumeLayout(false);
+            this.tableDispWindow.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel panMain;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem btnClearWindow;
         private System.Windows.Forms.ToolStripMenuItem btnHSizeMode;
@@ -380,5 +426,9 @@
         private System.Windows.Forms.ToolStripMenuItem btnSaveTemplate;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem 参数PToolStripMenuItem;
+        private System.Windows.Forms.SplitContainer splitHorzon;
+        private System.Windows.Forms.TableLayoutPanel tableDispWindow;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panMain;
     }
 }
