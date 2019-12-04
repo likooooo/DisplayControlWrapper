@@ -14,8 +14,8 @@ namespace DisplayControlWrapper
         new Rectangle ViewRectangle { get; }
         new Rectangle DisplayRectangleInDocker { get; }
         new Rectangle DockerRectangle { get; }
-        new HWindowHandle WindowHandle { get; }
-        new HImageHandle ImageHandle { get; }
+        //new HWindowHandle WindowHandle { get; }
+        //new HImageHandle ImageHandle { get; }
         bool DispImage();
         void SetDispNormal();
         void SetDispZoom();
@@ -83,30 +83,29 @@ namespace DisplayControlWrapper
         }
 
 
-        public new HWindowHandle WindowHandle
-        {
-            get
-            {
-                return base.WindowHandle;
-            }
-            set
-            {
-                if (base.WindowHandle != null) base.WindowHandle.CloseWindow();
-            }
-        }
-        public new HImageHandle ImageHandle
-        {
-            get
-            {
-                return base.ImageHandle;
-            }
-            set
-            {
-                if (base.ImageHandle != null) base.ImageHandle.Dispose();
-                base.ImageHandle = value;
-                 DispImage();
-            }
-        }
+        //public new HWindowHandle WindowHandle
+        //{
+        //    get
+        //    {
+        //        return base.WindowHandle;
+        //    }
+        //    set
+        //    {
+        //        if (base.WindowHandle != null) base.WindowHandle.CloseWindow();
+        //    }
+        //}
+        //public new HImageHandle ImageHandle
+        //{
+        //    get
+        //    {
+        //        return base.ImageHandle;
+        //    }
+        //    set
+        //    {
+        //        if (base.ImageHandle != null) base.ImageHandle.Dispose();
+        //        base.ImageHandle = value;
+        //    }
+        //}
 
 
         public HalconWindowDisplayEventSet():base() { }
@@ -292,7 +291,7 @@ namespace DisplayControlWrapper
                 bool _isOutOfPixel = true;//避免像素过大
 
                 _isOutOfArea = row1 >= imgHeight || col1 >= imgWidth || row2 <= 0 || col2 <= 0;
-                _isOutOfSize = (row2 - row1) > imgHeight * 3 || (col2 - col1) > imgHeight * 3;
+                _isOutOfSize = (row2 - row1) > imgHeight * 8 || (col2 - col1) > imgHeight * 8;
                 _isOutOfPixel = DisplayRectangleInDocker.Height / (row2 - row1) > 30 || DisplayRectangleInDocker.Height / (col2 - col1) > 30;
 
                 if (_isOutOfArea || _isOutOfSize)

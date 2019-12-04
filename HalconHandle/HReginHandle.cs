@@ -11,8 +11,12 @@ namespace DisplayControlWrapper
         HRegion HRegion { get; }
 
 
+        void Concat(HRegionHandle region);
+        void Concat(List<HRegionHandle> regionArry);
+        void Concat(HRegionHandle[] regionArry);
         void ReadRegion(string filePath);
         void WriteRegion(string filePath);
+
         void Dispose();
         void Display(HWindowHandle windowHandle);
         void GenCircle(double row,double  col,double radius);
@@ -39,7 +43,24 @@ namespace DisplayControlWrapper
         public HRegionHandle() { region = new HRegion(); }
         public HRegionHandle(HRegion region) { this.region = region; }
 
-
+        public void Concat(HRegionHandle region)
+        {
+            this.HRegion.ConcatObj(region.HRegion);
+        }
+        public void Concat(List<HRegionHandle> regionArry)
+        {
+            foreach (var region in regionArry)
+            {
+                this.HRegion.ConcatObj(region.HRegion);
+            }
+        }
+        public void Concat(HRegionHandle[] regionArry)
+        {
+            foreach (var region in regionArry)
+            {
+                this.HRegion.ConcatObj(region.HRegion);
+            }
+        }
         public void ReadRegion(string filePath) { region.ReadRegion(filePath); }
         public void WriteRegion(string filePath)
         {

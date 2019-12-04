@@ -13,34 +13,29 @@ namespace DisplayImage
         DisplayControlWrapper.HWindowControl WindowHandle { get; }
         HImageHandle CurrentImage { get; }
         HShapeModelHandle CurrentShm { get; }
-        HRegionHandle CurrentROI { get; }
-        List<HRegionDraw> RegionList { get; }
-        void ReadTemplateImage(object sender, EventArgs e);
-        void ReadShapeModel(object sender, EventArgs e);
-        void SaveShapeModel(object sender, EventArgs e);
+
+        void ReadTemplateImage(out string filePath,out HImageHandle image);
+        void ReadShapeModel();
+        void SaveShapeModel();
 
 
         //绘制
-        void DrawCircle(object sender, EventArgs e);
-        void DrawEllipse(object sender, EventArgs e);
-        void DrawFitRectangle(object sender, EventArgs e);
-        void DrawRotRectangle(object sender, EventArgs e);
-        void DrawRegion(object sender, EventArgs e);
-
-        //删除绘制的Region
-        void RmSelectRegion(object sender, EventArgs e);
-        void RmAllRegion(object sender, EventArgs e);
+        HCircle DrawCircle();
+        HEllipse DrawEllipse();
+        HFitRectangle DrawFitRectangle();
+        HRotRectangle DrawRotRectangle();
+        HAnyRegion DrawRegion();
 
 
         //Region的运算
-        void Collection(object sender, EventArgs e);
-        void Intersection(object sender, EventArgs e);
-        void Diffrence(object sender, EventArgs e);
-        void XOR(object sender, EventArgs e);
+        void Collection();
+        void Intersection();
+        void Diffrence();
+        void XOR();
 
         //ROI的操作
-        void OpenROIFromFile(object sender, EventArgs e);
-        void SaveROI(object sender, EventArgs e);
+        HRegionHandle OpenROIFromFile();
+        void SaveROI(HRegionHandle CurrentROI);
     }
 
 
@@ -56,10 +51,9 @@ namespace DisplayImage
         HShapeModelHandle currentShm;
         public HShapeModelHandle CurrentShm { get { return currentShm; } }
 
-        public HRegionHandle CurrentROI { get { return RegionList.Last(); } }
 
-        List<HRegionDraw> regionList;
-        public List<HRegionDraw> RegionList { get { return regionList; } }
+        //List<HRegionDraw> regionList;
+        //public List<HRegionDraw> RegionList { get { return regionList; } }
 
 
         /// <summary>
@@ -69,22 +63,22 @@ namespace DisplayImage
         public MenuStripEvent(DisplayControlWrapper.HWindowControl windowHandle)
         {
             this.hWindowControl = windowHandle;
-            regionList = new List<HRegionDraw>();
         }
 
 
         //文件
-        public void ReadTemplateImage(object sender, EventArgs e)
+        public virtual void ReadTemplateImage(out string filePath,out HImageHandle image)
         {
+            filePath = "";
+            image = new HImageHandle();
             OpenFileDialog openFileDialog = new OpenFileDialog();//打开文件对话框       
             if (InitialDialog(openFileDialog, "读取图片"))
             {
-                HImageHandle img = new HImageHandle();
-                img.ReadImage(openFileDialog.FileName);
-                hWindowControl.ImageHandle = img;
+                filePath = openFileDialog.FileName;
+                image.ReadImage(filePath);
             }
         }
-        public void ReadShapeModel(object sender, EventArgs e)
+        public  void ReadShapeModel()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (InitialDialog(openFileDialog, "读取模板文件"))
@@ -92,7 +86,7 @@ namespace DisplayImage
                 currentShm = new HShapeModelHandle(openFileDialog.FileName);
             }
         }
-        public void SaveShapeModel(object sender, EventArgs e)
+        public  void SaveShapeModel()
         {
             if (currentShm == null)
                 return;
@@ -106,7 +100,7 @@ namespace DisplayImage
 
 
         //绘制
-        public void DrawCircle(object sender, EventArgs e)
+        public virtual HCircle DrawCircle()
         {
             bool temp1, temp2;
             temp1 = hWindowControl.EnableMoveImage;
@@ -116,9 +110,9 @@ namespace DisplayImage
             HCircle region = windowHandle.DrawCircle();
             hWindowControl.EnableMoveImage = temp1;
             hWindowControl.EnableZoomImage = temp2;
-            regionList.Add(region);
+            return region;
         }
-        public void DrawEllipse(object sender, EventArgs e)
+        public virtual HEllipse DrawEllipse()
         {
             bool temp1, temp2;
             temp1 = hWindowControl.EnableMoveImage;
@@ -128,11 +122,11 @@ namespace DisplayImage
             HEllipse region = windowHandle.DrawEllipse();
             hWindowControl.EnableMoveImage = temp1;
             hWindowControl.EnableZoomImage = temp2;
-
-            regionList.Add(region);
+            return region;
+            //  regionList.Add(region);
 
         }
-        public void DrawFitRectangle(object sender, EventArgs e)
+        public virtual HFitRectangle DrawFitRectangle()
         {
             bool temp1, temp2;
             temp1 = hWindowControl.EnableMoveImage;
@@ -142,10 +136,10 @@ namespace DisplayImage
             HFitRectangle region = windowHandle.DrawRectangle1();
             hWindowControl.EnableMoveImage = temp1;
             hWindowControl.EnableZoomImage = temp2;
-
-            regionList.Add(region);
+            return region;
+            //  regionList.Add(region);
         }
-        public void DrawRotRectangle(object sender, EventArgs e)
+        public virtual HRotRectangle DrawRotRectangle()
         {
             bool temp1, temp2;
             temp1 = hWindowControl.EnableMoveImage;
@@ -155,10 +149,10 @@ namespace DisplayImage
             HRotRectangle region = windowHandle.DrawRectangle2();
             hWindowControl.EnableMoveImage = temp1;
             hWindowControl.EnableZoomImage = temp2;
-
-            regionList.Add(region);
+            return region;
+          //  regionList.Add(region);
         }
-        public void DrawRegion(object sender, EventArgs e)
+        public virtual HAnyRegion DrawRegion()
         {
             bool temp1, temp2;
             temp1 = hWindowControl.EnableMoveImage;
@@ -168,49 +162,32 @@ namespace DisplayImage
             HAnyRegion region = windowHandle.DrawRegion();
             hWindowControl.EnableMoveImage = temp1;
             hWindowControl.EnableZoomImage = temp2;
-
-            regionList.Add(region);
+            return region;
+           // regionList.Add(region);
         }
-
-
-        //删除绘制的Region
-        public void RmSelectRegion(object sender, EventArgs e)
-        {
-            int regionCount = regionList.Count;
-            if (regionCount > 0) regionList.RemoveAt(regionCount - 1);
-
-        }
-        public void RmAllRegion(object sender, EventArgs e)
-        {
-            foreach (var region in regionList)
-            {
-                region.Dispose();
-            }
-        }
-
+     
 
         //Region的运算
-        public void Collection(object sender, EventArgs e)
-        {
-            HRegionHandle regionCollection = new HRegionHandle();
-            throw new Exception("未完成");
-        }
-        public void Intersection(object sender, EventArgs e)
+        public virtual void Collection()
         {
             throw new Exception("未完成");
         }
-        public void Diffrence(object sender, EventArgs e)
+        public virtual void Intersection()
+        {
+            throw new Exception("未完成");
+        }
+        public virtual void Diffrence()
         {
             throw new Exception("没有选中的ROI");
         }
-        public void XOR(object sender, EventArgs e)
+        public virtual void XOR()
         {
             throw new Exception("未完成");
         }
 
 
         //ROI的操作
-        public void OpenROIFromFile(object sender, EventArgs e)
+        public  HRegionHandle OpenROIFromFile()
         {
             HRegionHandle region = new HRegionHandle();
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -218,9 +195,9 @@ namespace DisplayImage
             {
                 region.ReadRegion(openFileDialog.FileName);
             }
-            regionList.Add((HRegionDraw)region);
+            return region;
         }
-        public void SaveROI(object sender, EventArgs e)
+        public  void SaveROI(HRegionHandle CurrentROI)
         {
             if (CurrentROI == null)
                 return;
@@ -234,9 +211,9 @@ namespace DisplayImage
 
 
         //默认打开路径
-        string InitialDirectory = Environment.CurrentDirectory;
+        public static string InitialDirectory = Environment.CurrentDirectory;
         //统一对话框
-        bool InitialDialog(FileDialog fileDialog, string title, string filter = "(*.jpg,*.png,*.jpeg,*.bmp,*.shm)|*.jgp;*.png;*.jpeg;*.bmp;*.shm|All files(*.*)|*.*")
+        public static bool InitialDialog(FileDialog fileDialog, string title, string filter = "(*.jpg,*.png,*.jpeg,*.bmp,*.shm)|*.jgp;*.png;*.jpeg;*.bmp;*.shm|All files(*.*)|*.*")
         {
             fileDialog.InitialDirectory = InitialDirectory;//初始化路径
             fileDialog.Filter = filter;//过滤选项设置，文本文件，所有文件。
@@ -262,7 +239,7 @@ namespace DisplayImage
                 return false;
             }
         }
-        bool InitialSaveDialog(SaveFileDialog fileDialog, string title, string defultFileName = "defult", string filter = "(*.jpg,*.png,*.jpeg,*.bmp,*.shm)|*.jgp;*.png;*.jpeg;*.bmp;*.shm|All files(*.*)|*.*")
+        public static bool InitialSaveDialog(SaveFileDialog fileDialog, string title, string defultFileName = "defult", string filter = "(*.jpg,*.png,*.jpeg,*.bmp,*.shm)|*.jgp;*.png;*.jpeg;*.bmp;*.shm|All files(*.*)|*.*")
         {
             fileDialog.InitialDirectory = InitialDirectory;//初始化路径
             fileDialog.Filter = filter;//过滤选项设置，文本文件，所有文件。

@@ -218,12 +218,18 @@ namespace DisplayControlWrapper
             SetEnableGetImageInfomation = flag;
             currentTreeView = treeView;
         }
+        public  void DispImage(HImageHandle image)
+        {
+            ImageHandle = image;
+            DispImage();
+        }
         public override bool DispImage()
         {
             bool isDisplay = base.DispImage();
-            if (currentTreeView != null)
+            if (currentTreeView == null) return isDisplay;
+            if (currentTreeView.Active&& currentTreeView.SelectedNode != null)
             {
-                foreach (var region in currentTreeView.HRegionDraw)
+                foreach (var region in currentTreeView.SelectRegionArry)
                 {
                     WindowHandle.DisplayRegion(region);
                 }

@@ -48,6 +48,10 @@ namespace DisplayControlWrapper
         {
             WindowHandle.SetDraw(mode);
         }
+        public void ClearWindow()
+        {
+            WindowHandle.ClearWindow();
+        }
         public void OpenWindow(Control docker)
         {
             Docker = docker;

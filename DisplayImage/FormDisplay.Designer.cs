@@ -92,6 +92,7 @@
             this.btnClearWindow.Name = "btnClearWindow";
             this.btnClearWindow.Size = new System.Drawing.Size(68, 21);
             this.btnClearWindow.Text = "清空窗口";
+            this.btnClearWindow.Click += new System.EventHandler(this.BtnClearWindow_Click);
             // 
             // btnHSizeMode
             // 
@@ -355,8 +356,7 @@
             // panMain
             // 
             this.panMain.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.panMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panMain.Location = new System.Drawing.Point(0, 0);
+            this.panMain.Location = new System.Drawing.Point(3, 3);
             this.panMain.Name = "panMain";
             this.panMain.Size = new System.Drawing.Size(672, 370);
             this.panMain.TabIndex = 5;

@@ -13,11 +13,10 @@ namespace DisplayImage
         /// </summary>
         [STAThread]
         static void Main()
-        {
+       {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            List<FormDisplay> dispArry = new List<FormDisplay>();
-            Application.Run(new FormDisplay(dispArry));
+            Application.Run(new FormMain());
         }
     }
 }

@@ -10,20 +10,17 @@ using DisplayControlWrapper;
 
 namespace DisplayImage
 {
-    public partial class FormDisplay : Form,I_MenuStripEvent
+    public partial class FormDisplay : Form
     {
-        HWindowControl hwindowControl;
-        MenuStripEvent menuEvent;
         HStatusStrip statusStrip;
         HTreeView hTreeView;
-
+        HWindowControl hwindowControl;
+        MenuStripEvent menuEvent;
 
         public HWindowControl WindowHandle { get { return hwindowControl; } }
-        public HImageHandle CurrentImage { get { return menuEvent.CurrentImage; } }
 
         public  HShapeModelHandle  CurrentShm { get { return menuEvent.CurrentShm; } }
-        public HRegionHandle CurrentROI { get { return menuEvent.CurrentROI; } }
-        public List<HRegionDraw> RegionList { get { return menuEvent.RegionList; } }
+
  
 
         /// <summary>
@@ -48,67 +45,96 @@ namespace DisplayImage
             hwindowControl.EnableMoveImage = true;
             hwindowControl.EnableGetImageInfomation(statusStrip);
             hwindowControl.EnableRegionListTreeView(hTreeView);
-            Text += ";     SizeMode:" + WindowHandle.HSizeMode.ToString();
-            menuEvent = new MenuStripEvent(hwindowControl);         
+            menuEvent = new MenuStripEvent(hwindowControl);
+            Text += ";     SizeMode:" + WindowHandle.HSizeMode.ToString();     
             DefaultValue.SetFont(this, DefaultValue.DefaultFont);
+            hTreeView.AfterSelect += (object sender, TreeViewEventArgs e) => { hwindowControl.DispImage(hTreeView.SelectImage); };
         }
 
 
         public void ReadTemplateImage(object sender, EventArgs e)
         {
-            menuEvent.ReadTemplateImage(sender,e);
-            hTreeView.AddImageNode();
+            string[] filePath = null;
+
+            var openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.Multiselect = true;
+            DialogResult dr = openFileDialog1.ShowDialog();
+            if (dr == System.Windows.Forms.DialogResult.OK)  filePath = openFileDialog1.FileNames;
+            if (filePath == null) return;
+            hTreeView.AddRangeImageNode(filePath);
         }
-        public void ReadShapeModel(object sender, EventArgs e){menuEvent.ReadShapeModel(sender,e);}
-        public void SaveShapeModel(object sender, EventArgs e){menuEvent.SaveShapeModel(sender,e);}
+        public void ReadShapeModel(object sender, EventArgs e){menuEvent.ReadShapeModel();}
+        public void SaveShapeModel(object sender, EventArgs e){menuEvent.SaveShapeModel();}
 
 
         //绘制
         public void DrawCircle(object sender, EventArgs e)
         {
-            menuEvent.DrawCircle(sender,e);
-            hTreeView.AddRegion(menuEvent.RegionList.Last());
-            hwindowControl.DispImage();
+            menuStrip1.Enabled = false;
+            hTreeView.AddRegionNode(menuEvent.DrawCircle());
+            hwindowControl.DispImage(hTreeView.SelectImage);
+            menuStrip1.Enabled = true;
         }
         public void DrawEllipse(object sender, EventArgs e)
         {
-            menuEvent.DrawEllipse(sender,e);
-            hTreeView.AddRegion(menuEvent.RegionList.Last());
-            hwindowControl.DispImage();
+            menuStrip1.Enabled = false;
+            hTreeView.AddRegionNode(menuEvent.DrawEllipse());
+            hwindowControl.DispImage(hTreeView.SelectImage);
+            menuStrip1.Enabled = true;
         }
         public void DrawFitRectangle(object sender, EventArgs e)
         {
-            menuEvent.DrawFitRectangle(sender,e);
-            hTreeView.AddRegion(menuEvent.RegionList.Last());
-            hwindowControl.DispImage();
+            menuStrip1.Enabled = false;
+            hTreeView.AddRegionNode(menuEvent.DrawFitRectangle());
+            hwindowControl.DispImage(hTreeView.SelectImage);
+            menuStrip1.Enabled = true;
         }
         public void DrawRotRectangle(object sender, EventArgs e)
         {
-            menuEvent.DrawRotRectangle(sender,e);
-            hTreeView.AddRegion(menuEvent.RegionList.Last());
-            hwindowControl.DispImage();
+            menuStrip1.Enabled = false;
+            hTreeView.AddRegionNode(menuEvent.DrawRotRectangle());
+            hwindowControl.DispImage(hTreeView.SelectImage);
+            menuStrip1.Enabled = true;
         }
         public void DrawRegion(object sender, EventArgs e)
         {
-            menuEvent.DrawRegion(sender,e);
-            hTreeView.AddRegion(menuEvent.RegionList.Last());
-            hwindowControl.DispImage();
+            menuStrip1.Enabled = false;
+            hTreeView.AddRegionNode(menuEvent.DrawRegion());
+            hwindowControl.DispImage(hTreeView.SelectImage);
+            menuStrip1.Enabled = true;
         }
 
         //删除绘制的Region
-        public void RmSelectRegion(object sender, EventArgs e){menuEvent.RmSelectRegion(sender,e);}
-        public void RmAllRegion(object sender, EventArgs e){menuEvent.RmAllRegion(sender,e);}
+        public void RmSelectRegion(object sender, EventArgs e)
+        {
+            hTreeView.RmSelectValue();
+            hwindowControl.DispImage(hTreeView.SelectImage);
+        }
+        public void RmAllRegion(object sender, EventArgs e)
+        {
+            hTreeView.RmAllValue();
+            hwindowControl.DispImage(new HImageHandle());
+        }
 
 
         //Region的运算
-        public void Collection(object sender, EventArgs e){menuEvent.Collection(sender,e);}
-        public void Intersection(object sender, EventArgs e){menuEvent.Intersection(sender,e);}
-        public void Diffrence(object sender, EventArgs e){menuEvent.Diffrence(sender,e);}
-        public void XOR(object sender, EventArgs e){menuEvent.XOR(sender,e);}
+        public void Collection(object sender, EventArgs e){menuEvent.Collection();}
+        public void Intersection(object sender, EventArgs e){menuEvent.Intersection();}
+        public void Diffrence(object sender, EventArgs e){menuEvent.Diffrence();}
+        public void XOR(object sender, EventArgs e){menuEvent.XOR();}
 
         //ROI的操作
-        public void OpenROIFromFile(object sender, EventArgs e){menuEvent.OpenROIFromFile(sender,e);}
-        public void SaveROI(object sender, EventArgs e){menuEvent.SaveROI(sender,e);}
+        public void OpenROIFromFile(object sender, EventArgs e)
+        {
+            menuEvent.OpenROIFromFile();
+        }
+        public void SaveROI(object sender, EventArgs e)
+        {
+            HRegionHandle region = new HRegionHandle();
+            var regionHandleArry = hTreeView.SelectRegionArry.Select(s => (HRegionHandle)s).ToArray();
+            region.Concat(regionHandleArry);
+            menuEvent.SaveROI(region);
+        }
 
         private void BtnAutoSize_Click(object sender, EventArgs e)
         {
@@ -151,6 +177,18 @@ namespace DisplayImage
             splitHorzon.SplitterDistance = splitHorzon.Height - statusStrip.Height;
             tableDispWindow.Width = splitHorzon.Panel1.Width;
             tableDispWindow.Height = splitHorzon.Panel1.Height;
+            string oldModeName = WindowHandle.HSizeMode.ToString();
+            WindowHandle.HSizeMode = HSizeMode.AutoSize;
+            Text = Text.Replace(oldModeName, WindowHandle.HSizeMode.ToString());
+        }
+
+        private void BtnClearWindow_Click(object sender, EventArgs e)
+        {
+            hwindowControl.ClearWindow();
+            hTreeView.RmAllValue();
+            hwindowControl.ImageHandle.Dispose();
+            hwindowControl.ImageHandle = new HImageHandle();
+            hwindowControl.DispImage();
         }
     }
 }
