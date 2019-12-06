@@ -1,9 +1,9 @@
 G:\Code\VSproject\github\DisplayControlWrapper\lib\Debug\DisplayControlWrapper.dll
 G:\Code\VSproject\github\DisplayControlWrapper\lib\Debug\DisplayControlWrapper.pdb
-G:\Code\VSproject\github\DisplayControlWrapper\obj\Debug\DisplayControlWrapper.csprojAssemblyReference.cache
-G:\Code\VSproject\github\DisplayControlWrapper\obj\Debug\DisplayControlWrapper.csproj.CoreCompileInputs.cache
-G:\Code\VSproject\github\DisplayControlWrapper\obj\Debug\DisplayControlWrapper.dll
-G:\Code\VSproject\github\DisplayControlWrapper\obj\Debug\DisplayControlWrapper.pdb
 G:\Code\VSproject\github\DisplayControlWrapper\lib\Debug\halcondotnet.dll
 G:\Code\VSproject\github\DisplayControlWrapper\lib\Debug\halcondotnet.xml
+G:\Code\VSproject\github\DisplayControlWrapper\obj\Debug\DisplayControlWrapper.csproj.CoreCompileInputs.cache
 G:\Code\VSproject\github\DisplayControlWrapper\obj\Debug\DisplayControlWrapper.csproj.CopyComplete
+G:\Code\VSproject\github\DisplayControlWrapper\obj\Debug\DisplayControlWrapper.dll
+G:\Code\VSproject\github\DisplayControlWrapper\obj\Debug\DisplayControlWrapper.pdb
+G:\Code\VSproject\github\DisplayControlWrapper\obj\Debug\DisplayControlWrapper.csprojAssemblyReference.cache

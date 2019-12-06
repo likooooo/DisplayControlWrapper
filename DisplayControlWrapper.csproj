@@ -45,24 +45,36 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HControll\HLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="HControll\HTablePanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="HalconWindowDisplayEvent\HalconWindowDisplayEvent.cs" />
     <Compile Include="HalconWindowDisplayEvent\HalconWindowDisplayEventParam.cs" />
     <Compile Include="HalconWindowDisplayEvent\HalconWindowDisplayEventSet.cs" />
     <Compile Include="HalconHandle\HImageHandle.cs" />
     <Compile Include="HalconHandle\HReginHandle.cs" />
     <Compile Include="HalconHandle\HShapeModelHandle.cs" />
-    <Compile Include="StatusStripWrapper\HStatusStrip.cs">
+    <Compile Include="HControll\HTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="TreeViewWrapper\HTreeView.cs" />
+    <Compile Include="HControll\HTrakBar.cs" />
+    <Compile Include="HControll\HStatusStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="HControll\HTreeView.cs" />
+    <Compile Include="HControll\I_HControl.cs" />
     <Compile Include="HWindowControl.cs" />
     <Compile Include="HalconHandle\HWindowHandle.cs" />
     <Compile Include="HalconHandle\HWindowDrawType.cs" />
-    <Compile Include="MenuStripWrapper\MenuStripControl.cs" />
-    <Compile Include="PictureBoxWrapper\PictureBoxControl.cs">
+    <Compile Include="HControll\MenuStripControl.cs" />
+    <Compile Include="HControll\PictureBoxControl.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

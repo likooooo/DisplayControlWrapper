@@ -9,7 +9,7 @@ namespace DisplayImage
 {
     public class DefaultValue
     {
-        public static Font treeFont = new Font("宋体", 10);
+        public static Font TreeFont = new Font("宋体", 10);
         public static Font DefaultFont = new Font("宋体", 15);
 
         public static void SetFont(Control parent, Font font)
